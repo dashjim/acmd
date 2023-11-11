@@ -30,17 +30,17 @@ def display_usage():
 Usage:  
           acmd [action] [prompt]
 Actions:
-          The first verb after `acmd` is deemed as a action. Possilbe verbs are:
+          The first verb after `acmd` is deemed as a action. Possible verbs are:
 
           dryrun - only generate the AWS-CLI command, do not run it.
           clear - TODO clear chat history
-          upload - TODO I case you have wrong generation. Upload history prompt and bedrock respond to the maintainance team to analize. 
-                        Recommand to clear none releated chat history first, then only upload problematic interactions.
+          upload - TODO I case you have wrong generation. Upload history prompt and bedrock respond to the maintenance team to analyze. 
+                        Recommend to clear none related chat history first, then only upload problematic interactions.
 Example: 
           acmd list all my s3 buckets. 
           acmd dryrun list all my s3 buckets.
 
-Report bugs to https://github.com/DEV3L/aws-cli-creator/issues
+Report bugs to https://github.com/dashjim/acmd/issues
           """)
 
 def start_agent_flow(query):
