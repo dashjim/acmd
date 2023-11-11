@@ -20,7 +20,10 @@ https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-
 * pip install --upgrade .
 
 # CLI to release the package
-python setup.py sdist upload -r pypi
+
+Under python-package-archetype, run: 
+`twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
+
 ## Installation
 
 ## License

@@ -9,7 +9,8 @@ CONST_CLINT_SIDE_ERROR = "client_side_error"
 
 def invoke():
     """
-    Usage: acbr please list all my s3 buckets. 
+    Usage: acmd [query]
+    Examle: acmd list all my s3 buckets. 
     """
     if len(sys.argv) > 1:
 
@@ -22,7 +23,25 @@ def invoke():
 
         return start_agent_flow(client_query)
     else:
-        print("Usage: acbr please list all my s3 buckets. ")
+        display_usage()
+
+def display_usage():
+    print("""
+Usage:  
+          acmd [action] [prompt]
+Actions:
+          The first verb after `acmd` is deemed as a action. Possilbe verbs are:
+
+          dryrun - only generate the AWS-CLI command, do not run it.
+          clear - TODO clear chat history
+          upload - TODO I case you have wrong generation. Upload history prompt and bedrock respond to the maintainance team to analize. 
+                        Recommand to clear none releated chat history first, then only upload problematic interactions.
+Example: 
+          acmd list all my s3 buckets. 
+          acmd dryrun list all my s3 buckets.
+
+Report bugs to https://github.com/DEV3L/aws-cli-creator/issues
+          """)
 
 def start_agent_flow(query):
     """
@@ -91,7 +110,7 @@ def agent_bedrock(query):
         if data['stop_reason'] != None:
             # print(data['stop_reason'])
             continue
-    print(f"< bedrock response: {final_response}")
+    print(f"< Bedrock response: {final_response}")
     return final_response 
 
 
