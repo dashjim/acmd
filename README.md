@@ -16,7 +16,7 @@ Usage:
 
 Actions:
 
-          The first verb after `acmd` is deemed as a action. Possible verbs are:
+          The first verb after `acmd` is deemed as an action. Possible verbs are:
 
           dryrun - TODO only generate the AWS-CLI command, do not run it.
           clear - TODO clear chat history
