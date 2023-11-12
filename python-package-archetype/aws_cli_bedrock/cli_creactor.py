@@ -1,11 +1,13 @@
-import boto3
-import subprocess
 import json
+import subprocess
 import sys
+import shlex
+import boto3
 
 bedrock = boto3.client(service_name='bedrock-runtime')
 
 CONST_CLINT_SIDE_ERROR = "client_side_error"
+
 
 def invoke():
     """
@@ -16,7 +18,7 @@ def invoke():
 
         # print(sys.argv)
 
-        ## concat all values in sys.argv into one value.
+        # concat all values in sys.argv into one value.
         sys.argv.pop(0)
         client_query = " ".join(sys.argv)
         print(f"> Query: {client_query}")
@@ -24,6 +26,7 @@ def invoke():
         return start_agent_flow(client_query)
     else:
         display_usage()
+
 
 def display_usage():
     print("""
@@ -43,6 +46,7 @@ Example:
 Report bugs to https://github.com/dashjim/acmd/issues
           """)
 
+
 def start_agent_flow(query):
     """
     TODO: Design the agent interface (input and output).
@@ -50,13 +54,17 @@ def start_agent_flow(query):
     generated_instruction = agent_bedrock(query)
     return agent_aws_cli(generated_instruction)
 
+
 def agent_aws_cli(instruction):
-    # print(instruction.strip().split(" "))
+    print(instruction.strip().split(" "))
     print("Running...\n")
-    result = subprocess.run(instruction.strip().split(" "), capture_output=True) 
-    result_str = result.stdout.decode().replace("\\n","\n")
+    instructions_lst = shlex.split(instruction.strip())
+    result = subprocess.run(
+        instructions_lst, capture_output=True, check=False)
+    result_str = result.stdout.decode().replace("\\n", "\n")
     print(result_str)
     return result_str
+
 
 def get_complete_prompt(query):
     full_prompt = f"""
@@ -77,11 +85,12 @@ def get_complete_prompt(query):
             Now the human input is: {query}
         """
     return json.dumps({
-            "prompt": f"\n\nHuman:{full_prompt} \n\nAssistant:",
-            "max_tokens_to_sample": 300,
-            "temperature": 0.1,
-            "top_p": 0.9,
-        })
+        "prompt": f"\n\nHuman:{full_prompt} \n\nAssistant:",
+        "max_tokens_to_sample": 300,
+        "temperature": 0.1,
+        "top_p": 0.9,
+    })
+
 
 def agent_bedrock(query):
     """
@@ -92,10 +101,10 @@ def agent_bedrock(query):
     accept = 'application/json'
     contentType = 'application/json'
 
-    response = bedrock.invoke_model_with_response_stream(body=get_complete_prompt(query), modelId=modelId, accept=accept, contentType=contentType)
+    response = bedrock.invoke_model_with_response_stream(body=get_complete_prompt(
+        query), modelId=modelId, accept=accept, contentType=contentType)
     # print(response)
     response_body = response.get('body')
-
 
     # Iterate over events in the event stream as they come
     final_response = ""
@@ -105,18 +114,19 @@ def agent_bedrock(query):
         data = json.loads(event['chunk']['bytes'])
         # print(data['completion'], end='')
 
-        final_response = final_response + data['completion']                
+        final_response = final_response + data['completion']
         # If we received a progress event, print the details
         if data['stop_reason'] != None:
             # print(data['stop_reason'])
             continue
     print(f"< Bedrock response: {final_response}")
-    return final_response 
+    return final_response
 
 
 if __name__ == "__main__":
-    sys.argv = ["acbr", "please", "list", "all", "my", "s3", "buckets", "in", "us-east-2." ]
+    sys.argv = ["acbr", "please", "list", "all",
+                "my", "s3", "buckets", "in", "us-east-2."]
     # sys.argv = ["acbr", "列出我在us-east-2的全部s3桶。"]
-    sys.argv = ["acbr", "列出正在运行的Ec2实例。"]
-    sys.argv = ["acbr", "列出我在codecommit上的repo."]
+    # sys.argv = ["acbr", "列出正在运行的Ec2实例。"]
+    sys.argv = ["acbr", "列出我在codecommit上的repo中名称包含aws的."]
     invoke()
