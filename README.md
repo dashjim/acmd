@@ -2,20 +2,28 @@
 
 This a package use BedRock LLM to automatically generate the AWS CLI and execute it.
 
-> This is still early version: `USE AT YOUR OWN RISK`.
+> This is still a early reversion: `USE AT YOUR OWN RISK`.
+
+
+[![Watch the video](https://youtu.be/c1xR3Anheqs)](https://youtu.be/c1xR3Anheqs)
 
 **Example Usage**
 
 Usage:  
-          acmd [action] [prompt]
+    
+`acmd [action] [prompt]` 
+
+
 Actions:
+
           The first verb after `acmd` is deemed as a action. Possible verbs are:
 
-          dryrun - only generate the AWS-CLI command, do not run it.
+          dryrun - TODO only generate the AWS-CLI command, do not run it.
           clear - TODO clear chat history
           upload - TODO I case you have wrong generation. Upload history prompt and bedrock respond to the maintenance team to analyze. 
                         Recommend to clear none related chat history first, then only upload problematic interactions.
-Example: 
+Example:
+
           acmd list all my s3 buckets. 
           acmd dryrun list all my s3 buckets.
 
