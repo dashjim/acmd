@@ -22,7 +22,7 @@ https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-
 # CLI to release the package
 
 Under python-package-archetype, run: 
-`twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
+`python setup.py sdist & twine upload --repository-url https://upload.pypi.org/legacy/ dist/*`
 
 ## Installation
 

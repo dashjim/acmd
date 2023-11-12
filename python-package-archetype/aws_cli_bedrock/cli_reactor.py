@@ -56,13 +56,13 @@ def start_agent_flow(query):
 
 
 def agent_aws_cli(instruction):
-    print(instruction.strip().split(" "))
+    # print(instruction.strip().split(" "))
     print("Running...\n")
     instructions_lst = shlex.split(instruction.strip())
     result = subprocess.run(
         instructions_lst, capture_output=True, check=False)
     result_str = result.stdout.decode().replace("\\n", "\n")
-    print(result_str)
+    # print(result_str)
     return result_str
 
 
